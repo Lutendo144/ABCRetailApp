@@ -1,0 +1,34 @@
+﻿@model List<ABCRetailApp.Models.CartItem>
+
+<h2>Order Details</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Price (R)</th>
+            <th>Quantity</th>
+            <th>Subtotal (R)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ProductName</td>
+                <td>R @item.Price.ToString("N2")</td>
+                <td>@item.Quantity</td>
+                <td>R @(item.Subtotal.ToString("N2"))</td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="3" class="text-end"><strong>Total:</strong></td>
+            <td><strong>R @ViewBag.Total.ToString("N2")</strong></td>
+        </tr>
+    </tfoot>
+
+</table>
+
+<a class="btn btn-primary mt-3" asp-action="MyOrders" asp-controller="Customer">Back to My Orders</a>

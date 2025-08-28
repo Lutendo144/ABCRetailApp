@@ -1,0 +1,68 @@
+﻿@model List<string>
+
+@{
+    ViewData["Title"] = "Access Logs";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" />
+
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background: url('/images/Shoppingbg.jpeg') no-repeat center center/cover;
+        background-size: cover;
+        min-height: 100vh;
+        padding-top: 50px;
+    }
+
+    .logs-container {
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 15px;
+        padding: 20px;
+        max-width: 900px;
+        margin: auto;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
+</style>
+
+<div class="container logs-container">
+    <h2>Access Logs</h2>
+
+    @if (Model == null || !Model.Any())
+    {
+        <p class="text-center">No log files available.</p>
+    }
+    else
+    {
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Log File Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    <tr>
+                        <td>@(i + 1)</td>
+                        <td>@Model[i]</td>
+                        <td>
+                            <a class="btn btn-sm btn-primary" href="@Url.Action("DownloadLog", new { fileName = Model[i] })">Download</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <div class="text-center mt-3">
+        <a href="@Url.Action("Dashboard")" class="btn btn-secondary">Back to Dashboard</a>
+    </div>
+</div>

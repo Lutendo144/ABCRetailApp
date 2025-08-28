@@ -1,0 +1,69 @@
+﻿@model List<ABCRetailApp.Models.Employee>
+@{
+    ViewData["Title"] = "Manage Employees";
+}
+
+<h2>Employees</h2>
+
+<h4>Add New Employee</h4>
+<form asp-action="AddEmployeeProfile" method="post">
+    <div>
+        <label>Full Name</label>
+        <input type="text" name="fullName" required />
+    </div>
+    <div>
+        <label>Email</label>
+        <input type="email" name="email" required />
+    </div>
+    <div>
+        <label>Password</label>
+        <input type="password" name="password" required />
+    </div>
+    <button type="submit">Add Employee</button>
+</form>
+
+@if (TempData["Success"] != null)
+{
+    <p style="color:green">@TempData["Success"]</p>
+}
+@if (TempData["Error"] != null)
+{
+    <p style="color:red">@TempData["Error"]</p>
+}
+
+<hr />
+
+
+<table border="1" cellpadding="5">
+    <thead>
+        <tr>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var employee in Model)
+        {
+            <tr>
+                <td>@employee.FullName</td>
+                <td>@employee.Email</td>
+                <td>
+              
+                    <form asp-action="EditEmployeeProfile" method="post" style="display:inline-block">
+                        <input type="hidden" name="rowKey" value="@employee.RowKey" />
+                        <input type="text" name="fullName" value="@employee.FullName" required />
+                        <input type="email" name="email" value="@employee.Email" required />
+                        <button type="submit">Edit</button>
+                    </form>
+
+                 
+                    <form asp-action="DeleteEmployeeProfile" method="post" style="display:inline-block" onsubmit="return confirm('Are you sure?');">
+                        <input type="hidden" name="rowKey" value="@employee.RowKey" />
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

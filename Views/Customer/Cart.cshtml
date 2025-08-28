@@ -1,0 +1,61 @@
+﻿@model List<ABCRetailApp.Models.CartItem>
+@{
+    ViewBag.Title = "My Cart";
+}
+
+<h2>My Cart</h2>
+
+@if (!Model.Any())
+{
+    <p>Your cart is empty.</p>
+    <a class="btn btn-primary" asp-action="ViewProducts">Continue Shopping</a>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price (R)</th>
+                <th>Quantity</th>
+                <th>Subtotal (R)</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ProductName</td>
+                    <td>@item.Price.ToString("F2")</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.Subtotal.ToString("F2")</td>
+                    <td>
+                        <form asp-action="RemoveFromCart" method="post" style="display:inline">
+                            <input type="hidden" name="rowKey" value="@item.RowKey" />
+                            <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3" class="text-right"><strong>Total:</strong></td>
+                <td colspan="2"><strong>R@ViewBag.Total.ToString("F2")</strong></td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <div class="mb-3">
+        <form asp-action="ClearCart" method="post" style="display:inline">
+            <button type="submit" class="btn btn-warning">Clear Cart</button>
+        </form>
+
+        <form asp-action="Checkout" method="post" style="display:inline">
+            <button type="submit" class="btn btn-success">Checkout</button>
+        </form>
+
+        <a class="btn btn-primary" asp-action="ViewProducts">Continue Shopping</a>
+    </div>
+}

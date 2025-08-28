@@ -1,0 +1,83 @@
+﻿@model List<ABCRetailApp.Models.Product>
+
+
+@{
+    ViewData["Title"] = "View Products";
+    var selectedCategory = ViewBag.SelectedCategory as string ?? "All";
+    var cart = ViewBag.Cart as List<ABCRetailApp.Models.CartItem> ?? new List<ABCRetailApp.Models.CartItem>();
+    int cartCount = cart.Sum(c => c.Quantity);
+}
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" />
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Available Products</h2>
+   <div class="filter-container mb-3">
+        <form method="get" asp-action="ViewProducts">
+            <div class="input-group">
+                <select name="category" class="form-select">
+                    <option value="All" selected="@(selectedCategory == "All" ? "selected" : null)">All</option>
+                    <option value="Camera" selected="@(selectedCategory == "Camera" ? "selected" : null)">Camera</option>
+                    <option value="Gaming" selected="@(selectedCategory == "Gaming" ? "selected" : null)">Gaming</option>
+                    <option value="Network" selected="@(selectedCategory == "Network" ? "selected" : null)">Network</option>
+                    <option value="Gadgets" selected="@(selectedCategory == "Gadgets" ? "selected" : null)">Gadgets</option>
+                    <option value="Other" selected="@(selectedCategory == "Other" ? "selected" : null)">Other</option>
+                </select>
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="row">
+        @foreach (var product in Model)
+        {
+            if (selectedCategory != "All" && product.Category != selectedCategory)
+            {
+                continue;
+            }
+
+            <div class="col-md-3 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <img src="@product.ImageUrl" alt="@product.ProductName"
+                         class="card-img-top" style="height:200px; object-fit:contain;" />
+                    <div class="card-body">
+                        <h5 class="card-title">@product.ProductName</h5>
+                        <p class="card-text">@product.Category</p>
+                        <p class="card-text">@product.Description</p>
+                        <p class="card-text"><strong>Price:</strong> R@(product.Price.ToString("F2"))</p>
+                        <p class="card-text"><strong>Quantity:</strong> @product.Quantity</p>
+                        @if (product.OutOfStock)
+                        {
+                            <span class="badge bg-danger">Out of Stock</span>
+                        }
+                    </div>
+                    <div class="card-footer">
+                        @if (!product.OutOfStock)
+                        {
+                            <form method="post" asp-action="AddToCart" asp-controller="Customer">
+                                <input type="hidden" name="rowKey" value="@product.RowKey" />
+                                <input type="hidden" name="rowKey" value="@product.RowKey" />
+                                <input type="hidden" name="productName" value="@product.ProductName" />
+                                <input type="hidden" name="price" value="@product.Price" />
+                                <button type="submit" class="btn btn-success w-100">Add to Cart</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <button class="btn btn-secondary w-100" disabled>Out of Stock</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="d-flex justify-content-between mt-4">
+        <a class="btn btn-secondary" asp-action="Dashboard" asp-controller="Customer">Back</a>
+        <a class="btn btn-primary" asp-action="ViewCart" asp-controller="Customer">
+            Proceed to Cart (@cartCount)
+        </a>
+    </div>
+</div>

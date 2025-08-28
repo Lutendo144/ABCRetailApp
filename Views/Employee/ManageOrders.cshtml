@@ -1,0 +1,85 @@
+﻿@using ABCRetailApp.Models
+@{
+    ViewData["Title"] = "Manage Orders";
+    var orders = ViewBag.PendingOrders as List<Order> ?? new List<Order>();
+    var products = ViewBag.Products as List<Product> ?? new List<Product>();
+}
+
+<h2>Manage Orders & Inventory</h2>
+
+<hr />
+
+<h4>Pending Orders</h4>
+@if (!orders.Any())
+{
+    <p>No pending orders in the queue.</p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Customer Email</th>
+                <th>Total (R)</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in orders)
+            {
+                <tr>
+                    <td>@order.RowKey</td>
+                    <td>@order.CustomerEmail</td>
+                    <td>R @order.TotalAmount.ToString("N2")</td>
+                    <td>@order.Status</td>
+                    <td>
+                        <form method="post" asp-action="ApproveOrder" asp-controller="Employee">
+                            <input type="hidden" name="messageId" value="@order.RowKey" />
+                            <input type="hidden" name="popReceipt" value="@order.ETag}" />
+                            <button type="submit" class="btn btn-success btn-sm">Process</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<hr />
+
+<h4>Inventory Management</h4>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Price (R)</th>
+            <th>Quantity</th>
+            <th>Out of Stock</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in products)
+        {
+            <tr>
+                <td>@product.ProductName</td>
+                <td>@product.Category</td>
+                <td>@product.Description</td>
+                <td>R @product.Price.ToString("N2")</td>
+                <td>@product.Quantity</td>
+                <td>@(product.OutOfStock ? "Yes" : "No")</td>
+                <td>
+                    <a class="btn btn-primary btn-sm" asp-action="EditProduct" asp-route-rowKey="@product.RowKey">Edit</a>
+                    <form method="post" asp-action="DeleteProduct" style="display:inline">
+                        <input type="hidden" name="rowKey" value="@product.RowKey" />
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

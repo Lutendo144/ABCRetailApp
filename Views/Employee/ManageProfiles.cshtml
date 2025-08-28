@@ -1,0 +1,128 @@
+﻿@model ABCRetailApp.Models.ManageProfilesViewModel
+@{
+    ViewData["Title"] = "Manage Profiles";
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Manage Profiles</h2>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <div class="mb-4 text-center">
+        <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#addEmployeeModal">Add Employee</button>
+        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addCustomerModal">Add Customer</button>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <h4>Employees</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var emp in Model.Employees)
+                    {
+                        <tr>
+                            <td>@emp.FullName</td>
+                            <td>@emp.Email</td>
+                            <td>
+                                <form asp-action="DeleteEmployeeProfile" method="post" class="d-inline">
+                                    <input type="hidden" name="rowKey" value="@emp.RowKey" />
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <h4>Customers</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var cust in Model.Customers)
+                    {
+                        <tr>
+                            <td>@cust.FullName</td>
+                            <td>@cust.Email</td>
+                            <td>
+                                <form asp-action="DeleteCustomerProfile" method="post" class="d-inline">
+                                    <input type="hidden" name="rowKey" value="@cust.RowKey" />
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-controller="Employee" asp-action="AddEmployeeProfile" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Employee</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" name="fullName" class="form-control mb-2" placeholder="Full Name" required />
+                    <input type="email" name="email" class="form-control mb-2" placeholder="Email" required />
+                    <input type="password" name="password" class="form-control mb-2" placeholder="Password" required />
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Add Employee</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="addCustomerModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-controller="Employee" asp-action="AddCustomerProfile" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Customer</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" name="fullName" class="form-control mb-2" placeholder="Full Name" required />
+                    <input type="email" name="email" class="form-control mb-2" placeholder="Email" required />
+                    <input type="password" name="password" class="form-control mb-2" placeholder="Password" required />
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Add Customer</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

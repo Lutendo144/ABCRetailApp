@@ -1,0 +1,67 @@
+﻿@model List<ABCRetailApp.Models.Customer>
+@{
+    ViewData["Title"] = "Manage Customers";
+}
+
+<h2>Customers</h2>
+
+<h4>Add New Customer</h4>
+<form asp-action="AddCustomerProfile" method="post">
+    <div>
+        <label>Full Name</label>
+        <input type="text" name="fullName" required />
+    </div>
+    <div>
+        <label>Email</label>
+        <input type="email" name="email" required />
+    </div>
+    <div>
+        <label>Password</label>
+        <input type="password" name="password" required />
+    </div>
+    <button type="submit">Add Customer</button>
+</form>
+
+@if (TempData["Success"] != null)
+{
+    <p style="color:green">@TempData["Success"]</p>
+}
+@if (TempData["Error"] != null)
+{
+    <p style="color:red">@TempData["Error"]</p>
+}
+
+<hr />
+
+<table border="1" cellpadding="5">
+    <thead>
+        <tr>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var customer in Model)
+        {
+            <tr>
+                <td>@customer.FullName</td>
+                <td>@customer.Email</td>
+                <td>
+         
+                    <form asp-action="EditCustomerProfile" method="post" style="display:inline-block">
+                        <input type="hidden" name="rowKey" value="@customer.RowKey" />
+                        <input type="text" name="fullName" value="@customer.FullName" required />
+                        <input type="email" name="email" value="@customer.Email" required />
+                        <button type="submit">Edit</button>
+                    </form>
+
+                    <form asp-action="DeleteCustomerProfile" method="post" style="display:inline-block" onsubmit="return confirm('Are you sure?');">
+                        <input type="hidden" name="rowKey" value="@customer.RowKey" />
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

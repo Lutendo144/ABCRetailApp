@@ -1,0 +1,68 @@
+﻿@{
+    ViewData["Title"] = "Customer Dashboard";
+    var customerName = ViewBag.CustomerName as string;
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background: url('/images/Shoppingbg.jpeg') no-repeat center center/cover;
+        background-size: cover;
+        min-height: 100vh;
+        padding-top: 50px;
+    }
+
+    .dashboard-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 30px;
+    }
+
+    .dashboard-card {
+        width: 250px;
+        height: 150px;
+        background-color: rgba(255, 255, 255, 0.85);
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        cursor: pointer;
+        transition: transform 0.3s, box-shadow 0.3s;
+        font-weight: bold;
+        color: #333;
+        text-decoration: none;
+    }
+
+        .dashboard-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+
+    .welcome-text {
+        text-align: center;
+        color: white;
+        margin-bottom: 40px;
+    }
+</style>
+
+<div class="container">
+    <h2 class="welcome-text">Welcome, @customerName!</h2>
+
+    <div class="dashboard-container">
+        <a class="dashboard-card" href="@Url.Action("ViewProducts", "Customer")">
+            View Products
+        </a>
+        <a class="dashboard-card" href="@Url.Action("MyOrders", "Customer")">
+            My Orders
+        </a>
+        <a class="dashboard-card" href="@Url.Action("Logout", "Customer")">
+            Logout
+        </a>
+    </div>
+</div>

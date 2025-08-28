@@ -1,0 +1,25 @@
+﻿@{
+    ViewData["Title"] = "Employee Login";
+}
+
+
+<link rel="stylesheet" href="~/css/site.css" />
+
+<div class="login-container text-center">
+    <h2>Employee Login</h2>
+    <form method="post">
+        <div class="mb-3 text-start">
+            <label>Email</label>
+            <input type="email" name="email" class="form-control" placeholder="Enter your email" required />
+        </div>
+        <div class="mb-3 text-start">
+            <label>Password</label>
+            <input type="password" name="password" class="form-control" placeholder="Enter your password" required />
+        </div>
+        <button type="submit" class="btn btn-success btn-login">Login</button>
+        @if (ViewBag.Error != null)
+        {
+            <div class="error-message">@ViewBag.Error</div>
+        }
+    </form>
+</div>

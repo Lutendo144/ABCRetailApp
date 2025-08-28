@@ -1,0 +1,48 @@
+﻿@model List<ABCRetailApp.Models.CartItem>
+
+<h2>Your Cart</h2>
+
+@if (!Model.Any())
+{
+    <p>Your cart is empty.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ProductName</td>
+                    <td>R @item.Price.ToString("F2")</td>
+                    <td>@item.Quantity</td>
+                    <td>R @item.Subtotal.ToString("F2")</td>
+                    <td>
+                        <form asp-action="RemoveFromCart" method="post">
+                            <input type="hidden" name="rowKey" value="@item.RowKey" />
+                            <button type="submit" class="btn btn-danger">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h3>Total: R @ViewBag.Total.ToString("F2")</h3>
+
+    <div>
+        <a asp-action="ViewProducts" class="btn btn-secondary">Back to Products</a>
+        <form asp-action="Checkout" method="post" style="display:inline;">
+            <button type="submit" class="btn btn-primary">Checkout</button>
+        </form>
+    </div>
+}
